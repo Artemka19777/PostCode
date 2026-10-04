@@ -2,7 +2,7 @@ import joblib
 import numpy as np
 import pandas as pd
 import streamlit as st
-from project.codernock.pyfiles.text_utils import clean2
+from text_utils import clean2
 import sqlite3
 import datetime
 from contextlib import closing
