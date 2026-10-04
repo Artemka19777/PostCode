@@ -2,12 +2,16 @@ import joblib
 import numpy as np
 import pandas as pd
 import streamlit as st
-from text_utils import clean2
+from project.codernock.pyfiles.text_utils import clean2
 import sqlite3
 import datetime
 from contextlib import closing
 
-DB = 'tickets.db'
+from pathlib import Path
+
+BASE = Path(__file__).resolve().parent.parent   # корень проекта (на уровень выше pyfiles)
+MODELS = BASE / 'models'
+DB = BASE / 'data' / 'tickets.db'
 
 def init_db():
     with closing(sqlite3.connect(DB)) as conn, conn:
@@ -30,8 +34,10 @@ init_db()
 
 @st.cache_resource
 def load():
-    return (joblib.load('models/model_category_v1.joblib'), joblib.load('models/model_line_v1.joblib'),
-            joblib.load('models/line_history.joblib'), joblib.load('models/options.joblib'))
+    return (joblib.load(MODELS / 'model_category_v1.joblib'),
+            joblib.load(MODELS / 'model_line_v1.joblib'),
+            joblib.load(MODELS / 'line_history.joblib'),
+            joblib.load(MODELS / 'options.joblib'))
 
 cat_model, line_model, line_hist, options = load()
 LINE_COL = 'Кем решен (группа)'
